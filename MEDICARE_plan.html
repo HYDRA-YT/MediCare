@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MediCare — PROJECT PLAN & TECHNICAL ARCHITECTURE</title>
+<style>
+  @page { size: A4; margin: 2cm 2cm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11.5pt;
+    line-height: 1.45;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  /* ---------- Body header ---------- */
+  header { text-align: center; margin-bottom: 2em; }
+  header h1 {
+    font-size: 22pt;
+    margin: 0 0 0.2em 0;
+    letter-spacing: 0.5px;
+  }
+  header h2 {
+    font-size: 13.5pt;
+    margin: 0 0 0.9em 0;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+  }
+  header p { margin: 0; font-size: 11pt; text-align: center; }
+  /* ---------- Body ---------- */
+  h2 {
+    font-size: 13.5pt;
+    border-bottom: 1.5px solid #333;
+    padding-bottom: 2px;
+    margin: 1.1em 0 0.45em 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    margin: 0.85em 0 0.3em 0;
+    page-break-after: avoid;
+  }
+  p { margin: 0.35em 0; text-align: justify; }
+  ul { margin: 0.3em 0 0.55em 0; padding-left: 1.6em; }
+  li { margin: 0.15em 0; }
+  strong { color: #000; }
+  pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-left: 4px solid #888;
+    padding: 0.8em 1em;
+    margin: 0.8em 0;
+    white-space: pre;
+    page-break-inside: avoid;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.8em 0;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #999;
+    padding: 6px 9px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #ececec; font-weight: bold; }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.95em;
+    background: #f2f2f2;
+    padding: 0 2px;
+  }
+  /* ---------- Architecture diagram ---------- */
+  .arch { margin: 1.4em 0; text-align: center; }
+  .arch-box {
+    display: inline-block;
+    border: 1.5px solid #333;
+    background: #f4f4f4;
+    padding: 8px 22px;
+    border-radius: 4px;
+    font-size: 11.5pt;
+  }
+  .arch-name { font-weight: bold; }
+  .arch-sub { font-size: 10pt; color: #444; }
+  .arch-arrow { margin: 3px 0; line-height: 1; }
+  .arch-arrow svg { vertical-align: bottom; }
+  .arch-call {
+    font-size: 9pt;
+    font-style: italic;
+    color: #555;
+    margin-top: 2px;
+  }
+  /* ---------- Submitted-by signoff ---------- */
+  .signoff { text-align: right; margin-top: 0.6em; page-break-inside: avoid; }
+  .signoff p { margin: 0.15em 0; text-align: right; font-size: 11pt; }
+  .signoff .signoff-label {
+    font-weight: bold;
+    margin-top: 0.7em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MediCare</h1>
+  <h2>PROJECT PLAN & TECHNICAL ARCHITECTURE</h2>
+  <p>Department of Computer Science & Engineering, SRM University</p>
+</header>
+
+<h2>1. Project Overview</h2>
+<p>MediCare is a console-based, menu-driven application designed to digitize hospital appointment booking and prescription management. The system allows doctors to publish their available time slots and manage appointments, while enabling patients to browse doctors by specialization, book and cancel appointments, and view their prescriptions. The application is built with a strict modular architecture separating user interface, business logic, and database operations.</p>
+<h2>2. Technology Stack &amp; Setup</h2>
+<ul>
+<li><strong>Programming Language:</strong> Java 17 (JDK 17)</li>
+<li><strong>Database:</strong> MongoDB Atlas (Cloud Database)</li>
+<li><strong>Build Automation:</strong> Apache Maven (3.9.x)</li>
+<li><strong>Version Control:</strong> Git &amp; GitHub</li>
+<li><strong>IDE:</strong> Visual Studio Code (with Microsoft Java Extension Pack)</li>
+</ul>
+<p><strong>Note:</strong> Database connection strings (MONGO_URI) are managed securely via local system environment variables and are never hardcoded or committed to the repository.</p>
+<h2>3. System Architecture</h2>
+<p>The application follows a strictly layered architectural pattern. Each layer is only aware of the layer directly below it. The UI never interacts directly with the database, ensuring clean separation of concerns and maintainability.</p>
+<div class="arch"><div class="arch-box"><span class="arch-name">User Input</span><br><span class="arch-sub">(Main.java)</span></div><div class="arch-arrow"><svg width="26" height="24" viewBox="0 0 26 24"><line x1="13" y1="1" x2="13" y2="15" stroke="#333" stroke-width="2"/><polygon points="13,22 5,12 21,12" fill="#333"/></svg><div class="arch-call">calls</div></div><div class="arch-box"><span class="arch-name">Service Layer</span><br><span class="arch-sub">(Business Logic & Validation)</span></div><div class="arch-arrow"><svg width="26" height="24" viewBox="0 0 26 24"><line x1="13" y1="1" x2="13" y2="15" stroke="#333" stroke-width="2"/><polygon points="13,22 5,12 21,12" fill="#333"/></svg><div class="arch-call">calls</div></div><div class="arch-box"><span class="arch-name">Repository Layer</span><br><span class="arch-sub">(Raw MongoDB CRUD Operations)</span></div><div class="arch-arrow"><svg width="26" height="24" viewBox="0 0 26 24"><line x1="13" y1="1" x2="13" y2="15" stroke="#333" stroke-width="2"/><polygon points="13,22 5,12 21,12" fill="#333"/></svg><div class="arch-call">calls</div></div><div class="arch-box"><span class="arch-name">MongoConnection Utility</span><br><span class="arch-sub">(MongoDB Link)</span></div></div>
+
+<h2>4. Data Models &amp; File Structure</h2>
+<p>The codebase is organized into distinct packages mapping to the system's logical layers:</p>
+<h3>model/ (Data Blueprints)</h3>
+<p>These classes define the structure of the data and contain only fields, getters, and setters with no business logic.</p>
+<ul>
+<li><strong>User.java:</strong> Abstract base class containing ID, name, email, and password.</li>
+<li><strong>Doctor.java:</strong> Extends User. Contains a list of appointment IDs managed by the doctor.</li>
+<li><strong>Patient.java:</strong> Extends User. Contains a list of appointment IDs placed by the patient.</li>
+<li><strong>Appointment.java:</strong> Represents a booked appointment (ID, doctorId, patientId, date, timeSlot, status).</li>
+<li><strong>Prescription.java:</strong> Represents a prescription issued by a doctor (ID, appointmentId, doctorId, patientId, diagnosis, medicines, timestamp).</li>
+</ul>
+<h3>repository/ (Database Access)</h3>
+<p>Responsible for converting Java objects to MongoDB Documents and handling raw DB queries.</p>
+<ul>
+<li><strong>DoctorRepository.java &amp; PatientRepository.java:</strong> Handle user CRUD operations and lookups by specialization.</li>
+<li><strong>AppointmentRepository.java:</strong> Handles booking, slot-availability checks, status updates, and appointment history queries.</li>
+<li><strong>PrescriptionRepository.java:</strong> Manages prescription records and retrieval.</li>
+</ul>
+<h3>service/ (Business Logic)</h3>
+<p>Handles decisions, calculations, and multi-step transactions.</p>
+<ul>
+<li><strong>DoctorService.java:</strong> Validates data (e.g., rejecting empty specialization fields) before calling DoctorRepository.</li>
+<li><strong>PatientService.java:</strong> Handles patient registration and profile validation.</li>
+<li><strong>AppointmentService.java:</strong> Core transactional logic. Verifies that the requested slot is free, inserts the appointment, and links it to the doctor and patient. Enforces rules such as rejecting past dates and blocking cancellation of completed appointments.</li>
+<li><strong>PrescriptionService.java:</strong> Attaches prescriptions only to completed appointments.</li>
+</ul>
+<h3>util/ &amp; exception/</h3>
+<ul>
+<li><strong>util/MongoConnection.java:</strong> Singleton class managing the connection lifecycle to MongoDB Atlas.</li>
+<li><strong>exception/SlotUnavailableException.java &amp; PatientNotFoundException.java:</strong> Custom runtime errors for application-specific failure states.</li>
+</ul>
+<h2>5. Implementation Plan</h2>
+<p>The modules are implemented sequentially in dependency order. Each step builds on the previous one, and each layer is tested before moving on.</p>
+<ol>
+<li>Project setup (Maven pom.xml, .gitignore); util/MongoConnection.java; all Data Models (User, Doctor, Patient, Appointment, Prescription).</li>
+<li>DoctorRepository.java; PatientRepository.java; DoctorService.java.</li>
+<li>AppointmentRepository.java; AppointmentService.java; SlotUnavailableException.java.</li>
+<li>PrescriptionRepository.java; PrescriptionService.java; PatientNotFoundException.java.</li>
+<li>Final wiring in Main.java (menu logic &amp; try/catch); end-to-end testing of the full flow; release.</li>
+</ol>
+<h2>6. Development &amp; Deployment Workflow</h2>
+<p>To prevent code collisions and ensure smooth collaboration, the team utilizes a strict Git branching strategy. No developer commits directly to the main branch. Individual features are developed on dedicated feature branches (e.g., <code>feature/appointment-booking</code>), reviewed via pull requests, and merged into main only after the integration test passes.</p>
+<ul>
+<li>Each feature branch is short-lived and is pulled from an up-to-date main before opening a pull request.</li>
+<li>Code reviews focus on layering discipline: the service layer must never import from the UI, and repositories must never be called directly from Main.java.</li>
+<li>The shared GitHub repository is the single source of truth; team members push their branches daily to avoid stale forks.</li>
+<li>Releases are tagged (e.g., <code>v1.0</code>) once the full menu flow — register, login, book, cancel, complete, prescribe — passes end-to-end.</li>
+<li>Final demo: set the MONGO_URI environment variable locally, build with <code>mvn clean package</code>, and run the application (<code>mvn exec:java</code> or launch Main.java from VS Code). The connection to MongoDB Atlas is established on startup.</li>
+</ul>
+<div class="signoff">
+  <p><strong>Subject:</strong> Advanced Programming Practice</p>
+  <p class="signoff-label">Submitted by</p>
+  <p>Prabhat Arora<br>Reg. No.: 06<br>AI/ML A</p>
+</div>
+</body>
+</html>

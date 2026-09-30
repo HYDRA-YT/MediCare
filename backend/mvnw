@@ -1,0 +1,38 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Maven Wrapper bootstrap script (local, no internet-required at runtime once
+# maven-wrapper.jar is present). Downloads Maven 3.9.x distribution on first run.
+# ----------------------------------------------------------------------------
+# Regenerate with a real Maven install using: mvn wrapper:wrapper -Dmaven=3.9.9
+# This lightweight script locates an installed Maven or downloads it.
+set -e
+
+MAVEN_VERSION=3.9.9
+MAVEN_URL="https://repo1.maven.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}/apache-maven-${MAVEN_VERSION}-bin.zip"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+MAVEN_HOME="$PROJECT_DIR/.m2wrapper/apache-maven-${MAVEN_VERSION}"
+
+if [ -x "$MAVEN_HOME/bin/mvn" ]; then
+  exec "$MAVEN_HOME/bin/mvn" "$@"
+fi
+
+echo "Maven ${MAVEN_VERSION} not found locally. Downloading..."
+mkdir -p "$PROJECT_DIR/.m2wrapper"
+if command -v curl >/dev/null 2>&1; then
+  curl -fsSL "$MAVEN_URL" -o "$PROJECT_DIR/.m2wrapper/maven.zip"
+elif command -v wget >/dev/null 2>&1; then
+  wget -q "$MAVEN_URL" -O "$PROJECT_DIR/.m2wrapper/maven.zip"
+else
+  echo "Neither curl nor wget is available to download Maven." >&2
+  exit 1
+fi
+
+cd "$PROJECT_DIR/.m2wrapper"
+if command -v unzip >/dev/null 2>&1; then
+  unzip -q maven.zip
+else
+  echo "unzip is required to extract Maven." >&2
+  exit 1
+fi
+cd "$PROJECT_DIR"
+exec "$MAVEN_HOME/bin/mvn" "$@"
